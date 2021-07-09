@@ -6,7 +6,7 @@ import { basename, join, resolve } from 'path';
 import { promisify  } from 'util';
 
 import * as arg from 'arg';
-import * as ora from 'ora';
+import * as prompts from 'prompts';
 
 function copyDirectory(source: string, destination: string): void {
   mkdirSync(destination, { recursive: true });
@@ -28,9 +28,13 @@ async function copyAndInstallTemplate(
   destination: string,
   packageName: string,
 ): Promise<void> {
+  const templateName = basename(template);
+
   if (!existsSync(template)) {
-    throw new Error(`Unable to find template "${basename(template)}"`);
+    throw new Error(`Unable to find template "${templateName}"`);
   }
+
+  console.log(`[${templateName}]: Creating project scaffold...`);
 
   copyDirectory(template, destination);
 
@@ -42,6 +46,7 @@ async function copyAndInstallTemplate(
     const pkg = require(join(destination, 'package.json'));
     pkg.name = packageName;
     writeFileSync(join(destination, 'package.json'), JSON.stringify(pkg, null, 2));
+    console.log(`[${templateName}]: Installing dependencies...`);
     await promisify(exec)('npm install', { cwd: destination });
   }
 }
@@ -76,29 +81,70 @@ async function main() {
     throw new Error('Project name must be lower case containing only letters, numbers and dashes.');
   }
 
-  if (args['--client']) {
+  let clientTemplate = args['--client'];
+  let serverTemplate = args['--server'];
+
+  if (!clientTemplate && !serverTemplate) {
+    const clientTemplateOptions = [
+      ...readdirSync(join(__dirname, 'templates', 'client'), { withFileTypes: true })
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => {
+          return { title: entry.name[0].toUpperCase() + entry.name.slice(1), value: entry.name }
+        }),
+      { title: 'None', value: null }
+    ];
+
+    const serverTemplateOptions = [
+      ...readdirSync(join(__dirname, 'templates', 'server'), { withFileTypes: true })
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => {
+          return { title: entry.name[0].toUpperCase() + entry.name.slice(1), value: entry.name }
+        }),
+      { title: 'None', value: null }
+    ];
+
+    console.log();
+    const result = await prompts([
+      {
+        type: 'select',
+        name: 'clientTemplate',
+        message: 'Select a client template',
+        choices: clientTemplateOptions
+      },
+      {
+        type: 'select',
+        name: 'serverTemplate',
+        message: 'Select a server template',
+        choices: serverTemplateOptions
+      }
+    ]);
+
+    clientTemplate = result.clientTemplate;
+    serverTemplate = result.serverTemplate;
+  }
+  console.log();
+
+  if (clientTemplate) {
     await copyAndInstallTemplate(
-      join(__dirname, 'templates', 'client', args['--client']),
+      join(__dirname, 'templates', 'client', clientTemplate),
       args['--server'] ? join(targetDirectory, 'client') : targetDirectory,
       args['--server'] ? `${projectName}-client` : projectName
     );
   }
 
-  if (args['--server']) {
+  if (serverTemplate) {
     await copyAndInstallTemplate(
-      join(__dirname, 'templates', 'server', args['--server']),
+      join(__dirname, 'templates', 'server', serverTemplate),
       args['--client'] ? join(targetDirectory, 'server') : targetDirectory,
       args['--client'] ? `${projectName}-server` : projectName
     );
   }
 }
 
-const spinner = ora({text: 'Creating project', prefixText: '\n'}).start();
-
 main()
   .then(() => {
-    spinner.succeed('Project successfully created!\n')
+    console.log('\n✅ Project successfully created!\n');
   })
   .catch((error) => {
-    spinner.fail(error.message + '\n');
+    console.error(`\nError: ${error.message}\n`);
   });

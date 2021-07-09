@@ -17,10 +17,11 @@
   },
   "devDependencies": {
     "@types/node": "^15.12.4",
+    "@types/prompts": "^2.0.14",
     "typescript": "^4.3.4"
   },
   "dependencies": {
     "arg": "^5.0.0",
-    "ora": "^5.4.1"
+    "prompts": "^2.4.1"
   }
 }
