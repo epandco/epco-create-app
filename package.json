@@ -1,0 +1,26 @@
+{
+  "name": "@epandco/create-app",
+  "version": "0.1.0",
+  "author": "EP+Co",
+  "repository": "epandco/epco-create-app",
+  "main": "index.js",
+  "bin": {
+    "create-app": "index.js"
+  },
+  "files": [
+    "index.js",
+    "templates"
+  ],
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.4",
+    "typescript": "^4.3.4"
+  },
+  "dependencies": {
+    "arg": "^5.0.0",
+    "ora": "^5.4.1"
+  }
+}
