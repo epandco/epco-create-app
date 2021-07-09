@@ -127,16 +127,16 @@ async function main() {
   if (clientTemplate) {
     await copyAndInstallTemplate(
       join(__dirname, 'templates', 'client', clientTemplate),
-      args['--server'] ? join(targetDirectory, 'client') : targetDirectory,
-      args['--server'] ? `${projectName}-client` : projectName
+      serverTemplate ? join(targetDirectory, 'client') : targetDirectory,
+      serverTemplate ? `${projectName}-client` : projectName
     );
   }
 
   if (serverTemplate) {
     await copyAndInstallTemplate(
       join(__dirname, 'templates', 'server', serverTemplate),
-      args['--client'] ? join(targetDirectory, 'server') : targetDirectory,
-      args['--client'] ? `${projectName}-server` : projectName
+      clientTemplate ? join(targetDirectory, 'server') : targetDirectory,
+      clientTemplate ? `${projectName}-server` : projectName
     );
   }
 }
