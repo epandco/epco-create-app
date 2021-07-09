@@ -1,9 +1,12 @@
 # @epandco/create-app
 
 ## Usage
-It is highly recommended to use `@epandco/create-app` via `npx` to ensure the latest version of the CLI and templates are used.
+It is highly recommended to use `@epandco/create-app` via `npx` to ensure the latest version of the CLI and templates
+are used.
 
-A project name argument is required along with at least 1 template provided with the `--client` and `--server` options.
+```
+npx @epandco/create-app <project-name> [options]
+```
 
 ### Available templates
 - Client
