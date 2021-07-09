@@ -1,6 +1,6 @@
 {
   "name": "@epandco/create-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "EP+Co",
   "repository": "epandco/epco-create-app",
   "main": "index.js",
