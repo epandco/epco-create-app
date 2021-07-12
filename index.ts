@@ -88,7 +88,7 @@ async function main() {
       ...readdirSync(join(__dirname, 'templates', 'client'), { withFileTypes: true })
         .filter((entry) => entry.isDirectory())
         .map((entry) => {
-          return { title: entry.name[0].toUpperCase() + entry.name.slice(1), value: entry.name }
+          return { title: entry.name, value: entry.name }
         }),
       { title: 'none', value: null }
     ];
