@@ -1,6 +1,6 @@
 {
   "name": "@epandco/create-app",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "author": "EP+Co",
   "description": "A simple CLI to quickly scaffold projects using EP+Co's standard project templates",
   "repository": "epandco/epco-create-app",
