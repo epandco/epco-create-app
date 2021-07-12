@@ -2,6 +2,7 @@
   "name": "@epandco/create-app",
   "version": "0.2.3",
   "author": "EP+Co",
+  "description": "A simple CLI to quickly scaffold projects using EP+Co's standard project templates.",
   "repository": "epandco/epco-create-app",
   "main": "index.js",
   "bin": {
