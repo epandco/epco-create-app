@@ -1,6 +1,6 @@
 # @epandco/create-app
 
-A simple CLI to quickly scaffold projects using EP+Co standard project templates.
+A simple CLI to quickly scaffold projects using EP+Co's standard project templates
 
 ## Usage
 
