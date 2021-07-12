@@ -23,7 +23,7 @@ function copyDirectory(source: string, destination: string): void {
   }
 }
 
-async function copyAndInstallTemplate(
+async function copyTemplateAndInstallDependencies(
   template: string,
   destination: string,
   packageName: string,
@@ -124,7 +124,7 @@ async function main() {
   }
 
   if (clientTemplate) {
-    await copyAndInstallTemplate(
+    await copyTemplateAndInstallDependencies(
       join(__dirname, 'templates', 'client', clientTemplate),
       serverTemplate ? join(targetDirectory, 'client') : targetDirectory,
       serverTemplate ? `${projectName}-client` : projectName
@@ -132,7 +132,7 @@ async function main() {
   }
 
   if (serverTemplate) {
-    await copyAndInstallTemplate(
+    await copyTemplateAndInstallDependencies(
       join(__dirname, 'templates', 'server', serverTemplate),
       clientTemplate ? join(targetDirectory, 'server') : targetDirectory,
       clientTemplate ? `${projectName}-server` : projectName
