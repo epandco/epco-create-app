@@ -10,7 +10,8 @@
   },
   "files": [
     "index.js",
-    "templates"
+    "templates",
+    "!**/node_modules"
   ],
   "scripts": {
     "start": "tsc -w",
