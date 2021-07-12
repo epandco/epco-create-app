@@ -34,8 +34,7 @@ async function copyAndInstallTemplate(
     throw new Error(`Unable to find template "${templateName}"`);
   }
 
-  console.log(`[${templateName}]: Creating project scaffold...`);
-
+  console.log(`\n[${templateName}]: Creating project scaffold...`);
   copyDirectory(template, destination);
 
   if (existsSync(join(destination, '_gitignore'))) {
@@ -91,20 +90,21 @@ async function main() {
         .map((entry) => {
           return { title: entry.name[0].toUpperCase() + entry.name.slice(1), value: entry.name }
         }),
-      { title: 'None', value: null }
+      { title: 'none', value: null }
     ];
 
     const serverTemplateOptions = [
       ...readdirSync(join(__dirname, 'templates', 'server'), { withFileTypes: true })
         .filter((entry) => entry.isDirectory())
         .map((entry) => {
-          return { title: entry.name[0].toUpperCase() + entry.name.slice(1), value: entry.name }
+          return { title: entry.name, value: entry.name }
         }),
-      { title: 'None', value: null }
+      { title: 'none', value: null }
     ];
 
     console.log();
-    const result = await prompts([
+
+    const response = await prompts([
       {
         type: 'select',
         name: 'clientTemplate',
@@ -119,10 +119,9 @@ async function main() {
       }
     ]);
 
-    clientTemplate = result.clientTemplate;
-    serverTemplate = result.serverTemplate;
+    clientTemplate = response.clientTemplate;
+    serverTemplate = response.serverTemplate;
   }
-  console.log();
 
   if (clientTemplate) {
     await copyAndInstallTemplate(
